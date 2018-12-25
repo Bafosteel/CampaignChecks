@@ -78,6 +78,10 @@ def update_client_tokens(ids_mail,mail_refresh):
 
 ids_mail = load_obj("ids_mail")
 mail_refresh = load_obj("mail_refresh")
+print('------------------------------')
+print(mail_refresh)
+print(ids_mail)
+print('------------------------------')
 
 print(ids_mail)
 print(mail_refresh)
@@ -104,8 +108,8 @@ if clients[5] == ids_mail['n5zvIiexebHHazsF']:
 else:
     print("Client n5zvIiexebHHazsF is NOT OK")
     new_client = []
-    for elem in ids_mail['n5zvIiexebHHazsF']:
-        if elem not in clients[5]:
+    for elem in clients[5]:
+        if elem not in ids_mail['n5zvIiexebHHazsF']:
             new_client.append(elem)
     ids_mail['n5zvIiexebHHazsF'] = clients[5]
     save_obj(ids_mail, 'ids_mail')
@@ -122,8 +126,8 @@ if clients[4] == ids_mail['STBDrKKowc1aVQ1M']:
 else:
     print("Client STBDrKKowc1aVQ1M is NOT OK")
     new_client = []
-    for elem in ids_mail['STBDrKKowc1aVQ1M']:
-        if elem not in clients[4]:
+    for elem in clients[4]:
+        if elem not in ids_mail['STBDrKKowc1aVQ1M']:
             new_client.append(elem)
     ids_mail['STBDrKKowc1aVQ1M'] = clients[4]
     save_obj(ids_mail, 'ids_mail')
@@ -140,8 +144,8 @@ if clients[3] == ids_mail['iVTXNguDBEhyR2G0']:
 else:
     print("Client iVTXNguDBEhyR2G0 is NOT OK")
     new_client = []
-    for elem in ids_mail['iVTXNguDBEhyR2G0']:
-        if elem not in clients[3]:
+    for elem in clients[3]:
+        if elem not in ids_mail['iVTXNguDBEhyR2G0']:
             new_client.append(elem)
     ids_mail['iVTXNguDBEhyR2G0'] = clients[3]
     save_obj(ids_mail, 'ids_mail')
@@ -158,8 +162,8 @@ if clients[2] == ids_mail['cCV7EfBVutwh1yzn']:
 else:
     print("Client cCV7EfBVutwh1yzn is NOT OK")
     new_client = []
-    for elem in ids_mail['cCV7EfBVutwh1yzn']:
-        if elem not in clients[2]:
+    for elem in clients[2]:
+        if elem not in ids_mail['cCV7EfBVutwh1yzn']:
             new_client.append(elem)
     ids_mail['cCV7EfBVutwh1yzn'] = clients[2]
     save_obj(ids_mail, 'ids_mail')
@@ -176,8 +180,8 @@ if clients[1] == ids_mail['Gcwd3JCrhpkj8DQn']:
 else:
     print("Client Gcwd3JCrhpkj8DQn is NOT OK")
     new_client = []
-    for elem in ids_mail['Gcwd3JCrhpkj8DQn']:
-        if elem not in clients[1]:
+    for elem in clients[1]:
+        if elem not in ids_mail['Gcwd3JCrhpkj8DQn']:
             new_client.append(elem)
     ids_mail['Gcwd3JCrhpkj8DQn'] = clients[1]
     save_obj(ids_mail, 'ids_mail')
@@ -194,8 +198,8 @@ if clients[0] == ids_mail['dBp0GGsdn2khbLCk']:
 else:
     print("Client dBp0GGsdn2khbLCk is NOT OK")
     new_client = []
-    for elem in ids_mail['dBp0GGsdn2khbLCk']:
-        if elem not in clients[0]:
+    for elem in clients[0]:
+        if elem not in ids_mail['dBp0GGsdn2khbLCk']:
             new_client.append(elem)
     ids_mail['dBp0GGsdn2khbLCk'] = clients[0]
     save_obj(ids_mail, 'ids_mail')
