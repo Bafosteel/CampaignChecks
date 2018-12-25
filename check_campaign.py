@@ -53,7 +53,9 @@ for token in range(len(accounts_tokens)):
     for i in range(len(get_clients.json())):
         clients[token].append(get_clients.json()[i]['username'])
 
+print('______________________________________________________')
 print(clients)
+print('______________________________________________________')
 
 # id -- mail
 # mail -- refresh
