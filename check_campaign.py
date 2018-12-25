@@ -1,7 +1,7 @@
 import requests
 import json
 import pickle
-
+import time
 
 def save_obj(obj, name ):
     with open('obj/'+ name + '.pkl', 'wb') as f:
@@ -211,7 +211,11 @@ clients_accounts = {}
 clients_refresh = {}
 tokens = update_client_tokens(ids_mail,mail_refresh)
 
-import time
+proxies = {
+    'http': '154.117.191.114:60028',
+    'https': '154.117.191.114:60028',
+}
+
 
 for token in tokens:
     campaigns = []
@@ -227,9 +231,10 @@ for token in tokens:
         response = requests.get('https://target.my.com/api/v1/campaigns/'+str(campaign)+'.json', headers=header)
         print(response.json())
         if str(response.json()['date_end']) == '' or str(response.json()['budget_limit']) == '' or str(response.json()['budget_limit']) == 0:
-            data = {'name':str('ПРОВЕРИТЬ_')+str(response.json()['name']),'status':'blocked'}
+            data = {'name':str('CHECK_')+str(response.json()['name'].encode('utf-8')),'status':'blocked'}
             edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(campaign) + '.json',
                                       data=json.dumps(data), headers=header)
             print(edit_coms.json())
+            response = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text="+str('CHECK_')+str(response.json()['name'].encode('utf-8')), proxies=proxies)
         else:
             print('campaign '+str(campaign)+' is OK')
