@@ -105,6 +105,9 @@ def create_client_tokens(client_name,new_client):
     return cl_tkn
 
 
+print(clients[5])
+
+
 if clients[5] == ids_mail['n5zvIiexebHHazsF']:
     print("Client n5zvIiexebHHazsF is OK")
 else:
@@ -121,6 +124,9 @@ else:
     save_obj(mail_refresh, 'mail_refresh')
     ids_mail = load_obj("ids_mail")
     mail_refresh = load_obj("mail_refresh")
+
+
+print(clients[4])
 
 
 if clients[4] == ids_mail['STBDrKKowc1aVQ1M']:
@@ -141,6 +147,9 @@ else:
     mail_refresh = load_obj("mail_refresh")
 
 
+print(clients[3])
+
+
 if clients[3] == ids_mail['iVTXNguDBEhyR2G0']:
     print("Client iVTXNguDBEhyR2G0 is OK")
 else:
@@ -157,6 +166,9 @@ else:
     save_obj(mail_refresh, 'mail_refresh')
     ids_mail = load_obj("ids_mail")
     mail_refresh = load_obj("mail_refresh")
+
+
+print(clients[2])
 
 
 if clients[2] == ids_mail['cCV7EfBVutwh1yzn']:
@@ -177,6 +189,9 @@ else:
     mail_refresh = load_obj("mail_refresh")
 
 
+print(clients[1])
+
+
 if clients[1] == ids_mail['Gcwd3JCrhpkj8DQn']:
     print("Client Gcwd3JCrhpkj8DQn is OK")
 else:
@@ -193,6 +208,9 @@ else:
     save_obj(mail_refresh, 'mail_refresh')
     ids_mail = load_obj("ids_mail")
     mail_refresh = load_obj("mail_refresh")
+
+
+print(clients[0])
 
 
 if clients[0] == ids_mail['dBp0GGsdn2khbLCk']:
