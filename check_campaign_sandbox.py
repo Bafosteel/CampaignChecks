@@ -31,6 +31,12 @@ tokens = accounts_tokens
 
 import time
 
+proxies = {
+    'http': '154.117.191.114:60028',
+    'https': '154.  117.191.114:60028',
+}
+
+
 for token in tokens:
     campaigns = []
     campaignss = []
@@ -54,5 +60,7 @@ for token in tokens:
             edit_coms = requests.post('https://target-sandbox.my.com/api/v1/campaigns/' + str(campaign) + '.json',
                                       data=json.dumps(data), headers=header)
             print(edit_coms.json())
+            response = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text="+str('ПРОВЕРИТЬ_')+str(response.json()['name']), proxies=proxies)
         else:
             print('campaign '+str(campaign)+' is OK')
+
