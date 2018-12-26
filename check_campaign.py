@@ -12,7 +12,7 @@ def load_obj(name ):
     with open('obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
-
+'''
 def update_tokens(accounts,refresh):
     tokens = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
@@ -28,7 +28,23 @@ def update_tokens(accounts,refresh):
         print(response.json())
         tokens.append(response.json()['access_token'])
     return tokens
+'''
+def update_tokens(accounts,refresh):
+    tokens = []
+    header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
+    account = ['dBp0GGsdn2khbLCk','Gcwd3JCrhpkj8DQn','cCV7EfBVutwh1yzn','iVTXNguDBEhyR2G0','STBDrKKowc1aVQ1M','n5zvIiexebHHazsF']
+    for ids in account:
+        access_token_req = {
+            "client_id": str(ids),
+            "client_secret": str(accounts[ids]),
+            "refresh_token": str(refresh[ids]),
+            "grant_type": "refresh_token"
+        }
 
+        response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req, headers=header)
+        print(response.json())
+        tokens.append(response.json()['access_token'])
+    return tokens
 
 accounts = {'dBp0GGsdn2khbLCk': '9Ne68rhbu4e2TYuJHGlbDAAPNlOB75LfA4bJomJTy73Pbl9gDAoskXjjG81l2YPqDrVI4db7bD5vDzVc9pVoilel3JryZQl34VQCJcQWwXtXixoSKOLCGVMyppIOFCHCgAxblsXzJQcMJU7qyPgoH07kyhd7JU36WMMog6jGjoYrSsbMuz0GdYtDrv6W3lUtRGUYbxHVGP7MyqvyLjzTDbG3g5Fj6kUTofHfkocofMSRdbcTXnA',
             'Gcwd3JCrhpkj8DQn': '662kHNbGcUcUaRIXC5d0YnKylHfjb8oF9DSox7TEM3EciQ8CIMrmJrYWxZBYxriiPSpKsmMH99sc1PhZgOwmI6DWOvmWIzdd1Sqh0Yjj8nLyZqSGYmTLnG3qx1XbLBwbBq7uqzq6FVbfwbHWAfuwXRtIy9gfCiPAfX3wLcKvHwwwPHOxL992zq0mjbBK7Vs5PnQdT6FV60r9a5tZx4m3b1ehMx',
@@ -63,49 +79,6 @@ for token in range(len(accounts_tokens)):
         clients[token].append(get_clients.json()[i]['username'])
 
 
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[0])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients1.append(get_clients.json()[i]['username'])
-
-
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[1])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients2.append(get_clients.json()[i]['username'])
-
-
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[2])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients3.append(get_clients.json()[i]['username'])
-
-
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[3])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients4.append(get_clients.json()[i]['username'])
-
-
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[4])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients5.append(get_clients.json()[i]['username'])
-
-
-header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
-          'Authorization': 'Bearer '+str(accounts_tokens[5])}
-get_clients = requests.get('https://target.my.com/api/v1/clients.json', headers=header)
-for i in range(len(get_clients.json())):
-    clients6.append(get_clients.json()[i]['username'])
-
-
-
 def update_client_tokens(ids_mail,mail_refresh):
     tokens = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
@@ -125,13 +98,24 @@ def update_client_tokens(ids_mail,mail_refresh):
 
 ids_mail = load_obj("ids_mail")
 mail_refresh = load_obj("mail_refresh")
-print('------------------------------')
-print(mail_refresh)
-print(ids_mail)
-print('------------------------------')
 
 print(ids_mail)
 print(mail_refresh)
+
+print('_________________________________________________')
+print('5')
+print(clients[5])
+print('4')
+print(clients[4])
+print('3')
+print(clients[3])
+print('2')
+print(clients[2])
+print('1')
+print(clients[1])
+print('0')
+print(clients[0])
+print('_________________________________________________')
 
 
 def create_client_tokens(client_name,new_client):
@@ -153,7 +137,7 @@ def create_client_tokens(client_name,new_client):
 print(clients[5])
 
 
-if clients6 == ids_mail['n5zvIiexebHHazsF']:
+if clients[5] == ids_mail['n5zvIiexebHHazsF']:
     print("Client n5zvIiexebHHazsF is OK")
 else:
     print("Client n5zvIiexebHHazsF is NOT OK")
@@ -174,7 +158,7 @@ else:
 print(clients[4])
 
 
-if clients5 == ids_mail['STBDrKKowc1aVQ1M']:
+if clients[4] == ids_mail['STBDrKKowc1aVQ1M']:
     print("Client STBDrKKowc1aVQ1M is OK")
 else:
     print("Client STBDrKKowc1aVQ1M is NOT OK")
@@ -195,7 +179,7 @@ else:
 print(clients[3])
 
 
-if clients4 == ids_mail['iVTXNguDBEhyR2G0']:
+if clients[3] == ids_mail['iVTXNguDBEhyR2G0']:
     print("Client iVTXNguDBEhyR2G0 is OK")
 else:
     print("Client iVTXNguDBEhyR2G0 is NOT OK")
@@ -216,7 +200,7 @@ else:
 print(clients[2])
 
 
-if clients3 == ids_mail['cCV7EfBVutwh1yzn']:
+if clients[2] == ids_mail['cCV7EfBVutwh1yzn']:
     print("Client cCV7EfBVutwh1yzn is OK")
 else:
     print("Client cCV7EfBVutwh1yzn is NOT OK")
@@ -237,7 +221,7 @@ else:
 print(clients[1])
 
 
-if clients2 == ids_mail['Gcwd3JCrhpkj8DQn']:
+if clients[1] == ids_mail['Gcwd3JCrhpkj8DQn']:
     print("Client Gcwd3JCrhpkj8DQn is OK")
 else:
     print("Client Gcwd3JCrhpkj8DQn is NOT OK")
@@ -258,7 +242,7 @@ else:
 print(clients[0])
 
 
-if clients1 == ids_mail['dBp0GGsdn2khbLCk']:
+if clients[0] == ids_mail['dBp0GGsdn2khbLCk']:
     print("Client dBp0GGsdn2khbLCk is OK")
 else:
     print("Client dBp0GGsdn2khbLCk is NOT OK")
