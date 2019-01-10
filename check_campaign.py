@@ -2,6 +2,8 @@ import requests
 import json
 import pickle
 import time
+from datetime import datetime
+
 
 def save_obj(obj, name ):
     with open('obj/'+ name + '.pkl', 'wb') as f:
@@ -12,23 +14,6 @@ def load_obj(name ):
     with open('obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
-'''
-def update_tokens(accounts,refresh):
-    tokens = []
-    header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
-    for ids in accounts:
-        access_token_req = {
-            "client_id": str(ids),
-            "client_secret": str(accounts[ids]),
-            "refresh_token": str(refresh[ids]),
-            "grant_type": "refresh_token"
-        }
-
-        response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req, headers=header)
-        print(response.json())
-        tokens.append(response.json()['access_token'])
-    return tokens
-'''
 def update_tokens(accounts,refresh):
     tokens = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
@@ -60,16 +45,9 @@ refresh = {'dBp0GGsdn2khbLCk': '3leyQ3sJXj2cHzyXNegMnh6OMq1yJ9qWJn0MAPKLjlyTHmXq
            'STBDrKKowc1aVQ1M': 'CPhHyYJWN53nkXJDpsWAcWgncNY001Jzo2lcx0whC99TMCJHOudIToDa7H1XdjDOKRDarJlPeGrvL8sXs99n1pZwNGs0atWJzEr8wWK3eKBe1U9mVNvVKlchjdP5JQumg2LXGzZod1eC4YuB0349k3w3yHlxaHhCYQ33cCHDokPS425xqoDIDHe23sv073t6l19d3rLHR5QSgmgCnaN9b0EVpCo',
            'n5zvIiexebHHazsF': 'yDsvvP2PmUmvqHGcqUyvfoH3C18GgU5lu1qXB7Fn65YoqV5dCdqnwwPQvXvDc5crvzTfLLaO9NKWI3hHmEwXHn5O6XboKFNsnlVvNkWZF6Y0t23DbpKYwRPDUL26dQldohZmavmgEGVvlBmBlAcyXYE0MZABhoQnVj2JdhQXjnyRLYUvsDr1Wmv3qeySd57C7IC4kjxJHEBezWA7SS76sFo6j9g5I7TH2FEy'}
 
-accounts_tokens = update_tokens(accounts,refresh)
+accounts_tokens = update_tokens(accounts, refresh)
 
-clients = [[],[],[],[],[],[]]
-
-clients1 = []
-clients2 = []
-clients3 = []
-clients4 = []
-clients5 = []
-clients6 = []
+clients = [[], [], [], [], [], []]
 
 for token in range(len(accounts_tokens)):
     header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
@@ -90,7 +68,8 @@ def update_client_tokens(ids_mail,mail_refresh):
                 "refresh_token": str(mail_refresh[ids_mail[ids][j]]),
                 "grant_type": "refresh_token"
             }
-            response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req, headers=header)
+            response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req,
+                                     headers=header)
             print(response.json())
             tokens.append(response.json()['access_token'])
     return tokens
@@ -98,24 +77,6 @@ def update_client_tokens(ids_mail,mail_refresh):
 
 ids_mail = load_obj("ids_mail")
 mail_refresh = load_obj("mail_refresh")
-
-print(ids_mail)
-print(mail_refresh)
-
-print('_________________________________________________')
-print('5')
-print(clients[5])
-print('4')
-print(clients[4])
-print('3')
-print(clients[3])
-print('2')
-print(clients[2])
-print('1')
-print(clients[1])
-print('0')
-print(clients[0])
-print('_________________________________________________')
 
 
 def create_client_tokens(client_name,new_client):
@@ -276,18 +237,41 @@ for token in tokens:
               'Authorization':'Bearer '+str(token)}
     response = requests.get('https://target.my.com/api/v1/campaigns.json', headers=header)
     for i in range(len(response.json())):
+        print(len(response.json()))
+    #    if str(response.json()[i]['status']) == 'active':
+    #        campaigns.append(str(response.json()[i]['id']))
+    #        print(i)
+    #for campaign in campaigns:
+    #print("sleeping")
         if str(response.json()[i]['status']) == 'active':
-            campaigns.append(str(response.json()[i]['id']))
-    for campaign in campaigns:
-        print("sleeping")
-        time.sleep(10)
-        response = requests.get('https://target.my.com/api/v1/campaigns/'+str(campaign)+'.json', headers=header)
-        print(response.json())
-        if str(response.json()['date_end']) == '' or str(response.json()['budget_limit']) == '' or str(response.json()['budget_limit']) == 0:
-            data = {'name':str('CHECK_')+str(response.json()['name'].encode('utf-8')),'status':'blocked'}
-            edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(campaign) + '.json',
-                                      data=json.dumps(data), headers=header)
-            print(edit_coms.json())
-            response = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text="+str('CHECK_')+str(response.json()['name'].encode('utf-8')), proxies=proxies)
+            date2_str = datetime.today().strftime("%d.%m.%Y")
+            date2 = datetime.strptime(date2_str, '%d.%m.%Y')
+            date1_str = ''
+            date_list = str(response.json()[i]['created']).split('-')
+            date_list[2]=date_list[2][0:2]
+            date_list[2] = date_list[2] + "."
+            date_list[1] = date_list[1] + "."
+            date_list.reverse()
+            for word in date_list:
+                date1_str += word
+            date1 = datetime.strptime(str(date1_str), '%d.%m.%Y')
+            if (date2-date1).days <= 15:
+                print("sleeping")
+                time.sleep(30)
+                response1 = requests.get('https://target.my.com/api/v1/campaigns/'+str(response.json()[i]['id'])+'.json', headers=header)
+                print(response1.json())
+                if str(response1.json()['date_end']) == '' or str(response1.json()['budget_limit']) == '' or str(response1.json()['budget_limit']) == 0:
+                    data = {'name':str('CHECK_')+str(response1.json()['name'].encode('utf-8')),'status':'blocked'}
+                    edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(response.json()[i]['id'])
+                                              + '.json', data=json.dumps(data), headers=header)
+                    print(edit_coms.json())
+                    response2 = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=-1001478926327&text="+str('CHECK_')+str(response.json()['name'].encode('utf-8')), proxies=proxies)
+                    response3 = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text=" + str('CHECK_') + str(response1.json()['name'].encode('utf-8')), proxies=proxies)
+                else:
+                    print('campaign is OK')
+
+            else:
+                print("more than 14")
+
         else:
-            print('campaign '+str(campaign)+' is OK')
+            print("Not active")
