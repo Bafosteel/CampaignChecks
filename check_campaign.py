@@ -232,22 +232,22 @@ proxies = {
 
 
 for token in tokens:
-    campaigns = []
     header = {'Host':'target.my.com','Content-Type':'application/json','Accept-Encoding':'gzip,deflate,compress',
               'Authorization':'Bearer '+str(token)}
     response = requests.get('https://target.my.com/api/v1/campaigns.json', headers=header)
-    for i in range(len(response.json())):
-        print(len(response.json()))
+    campaigns = response.json()
+    for i in range(len(campaigns)):
+        print(len(campaigns))
     #    if str(response.json()[i]['status']) == 'active':
     #        campaigns.append(str(response.json()[i]['id']))
     #        print(i)
     #for campaign in campaigns:
     #print("sleeping")
-        if str(response.json()[i]['status']) == 'active':
+        if str(campaigns[i]['status']) == 'active':
             date2_str = datetime.today().strftime("%d.%m.%Y")
             date2 = datetime.strptime(date2_str, '%d.%m.%Y')
             date1_str = ''
-            date_list = str(response.json()[i]['created']).split('-')
+            date_list = str(campaigns[i]['created']).split('-')
             date_list[2]=date_list[2][0:2]
             date_list[2] = date_list[2] + "."
             date_list[1] = date_list[1] + "."
@@ -258,15 +258,16 @@ for token in tokens:
             if (date2-date1).days <= 15:
                 print("sleeping")
                 time.sleep(30)
-                response1 = requests.get('https://target.my.com/api/v1/campaigns/'+str(response.json()[i]['id'])+'.json', headers=header)
+                response1 = requests.get('https://target.my.com/api/v1/campaigns/'+str(campaigns[i]['id'])+'.json', headers=header)
                 print(response1.json())
-                if str(response1.json()['date_end']) == '' or str(response1.json()['budget_limit']) == '' or str(response1.json()['budget_limit']) == 0:
-                    data = {'name':str('CHECK_')+str(response1.json()['name'].encode('utf-8')),'status':'blocked'}
-                    edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(response.json()[i]['id'])
+                campaign = response1.json()
+                if str(campaign['date_end']) == '' or str(campaign['budget_limit']) == '' or str(campaign['budget_limit']) == 0:
+                    data = {'name':str('CHECK_')+str(campaign['name'].encode('utf-8')),'status':'blocked'}
+                    edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(campaigns[i]['id'])
                                               + '.json', data=json.dumps(data), headers=header)
                     print(edit_coms.json())
-                    response2 = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=-1001478926327&text="+str('CHECK_')+str(response.json()['name'].encode('utf-8')), proxies=proxies)
-                    response3 = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text=" + str('CHECK_') + str(response1.json()['name'].encode('utf-8')), proxies=proxies)
+                    telegram_chat = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=-1001478926327&text="+str('CHECK_')+str(campaign['name'].encode('utf-8')), proxies=proxies)
+                    telegram_me = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text=" + str('CHECK_') + str(campaign['name'].encode('utf-8')), proxies=proxies)
                 else:
                     print('campaign is OK')
 
@@ -275,3 +276,4 @@ for token in tokens:
 
         else:
             print("Not active")
+
