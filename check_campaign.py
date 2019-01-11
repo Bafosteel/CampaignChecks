@@ -236,6 +236,7 @@ for token in tokens:
               'Authorization':'Bearer '+str(token)}
     response = requests.get('https://target.my.com/api/v1/campaigns.json', headers=header)
     campaigns = response.json()
+    campaigns = sorted(campaigns, key=lambda x: x['status'])
     for i in range(len(campaigns)):
         print(len(campaigns))
     #    if str(response.json()[i]['status']) == 'active':
@@ -275,5 +276,8 @@ for token in tokens:
                 print("more than 14")
 
         else:
+            print(campaigns)
             print("Not active")
+            print('NEXT')
+            break
 
