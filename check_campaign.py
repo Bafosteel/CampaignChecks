@@ -3,18 +3,20 @@ import json
 import pickle
 import time
 from datetime import datetime
+import logging
 
 
-def save_obj(obj, name ):
+def save_obj(obj, name):
     with open('obj/'+ name + '.pkl', 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
 
 
-def load_obj(name ):
+def load_obj(name):
     with open('obj/' + name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
-def update_tokens(accounts,refresh):
+
+def update_tokens(accounts, refresh):
     tokens = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
     account = ['dBp0GGsdn2khbLCk','Gcwd3JCrhpkj8DQn','cCV7EfBVutwh1yzn','iVTXNguDBEhyR2G0','STBDrKKowc1aVQ1M','n5zvIiexebHHazsF']
@@ -28,8 +30,14 @@ def update_tokens(accounts,refresh):
 
         response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req, headers=header)
         print(response.json())
+        logging.info(str(response.json()))
         tokens.append(response.json()['access_token'])
     return tokens
+
+
+today_time = datetime.today()
+logging.basicConfig(filename="logs/sample.log", level=logging.INFO)
+
 
 accounts = {'dBp0GGsdn2khbLCk': '9Ne68rhbu4e2TYuJHGlbDAAPNlOB75LfA4bJomJTy73Pbl9gDAoskXjjG81l2YPqDrVI4db7bD5vDzVc9pVoilel3JryZQl34VQCJcQWwXtXixoSKOLCGVMyppIOFCHCgAxblsXzJQcMJU7qyPgoH07kyhd7JU36WMMog6jGjoYrSsbMuz0GdYtDrv6W3lUtRGUYbxHVGP7MyqvyLjzTDbG3g5Fj6kUTofHfkocofMSRdbcTXnA',
             'Gcwd3JCrhpkj8DQn': '662kHNbGcUcUaRIXC5d0YnKylHfjb8oF9DSox7TEM3EciQ8CIMrmJrYWxZBYxriiPSpKsmMH99sc1PhZgOwmI6DWOvmWIzdd1Sqh0Yjj8nLyZqSGYmTLnG3qx1XbLBwbBq7uqzq6FVbfwbHWAfuwXRtIy9gfCiPAfX3wLcKvHwwwPHOxL992zq0mjbBK7Vs5PnQdT6FV60r9a5tZx4m3b1ehMx',
@@ -57,7 +65,7 @@ for token in range(len(accounts_tokens)):
         clients[token].append(get_clients.json()[i]['username'])
 
 
-def update_client_tokens(ids_mail,mail_refresh):
+def update_client_tokens(ids_mail, mail_refresh):
     tokens = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
     for ids in ids_mail:
@@ -71,6 +79,7 @@ def update_client_tokens(ids_mail,mail_refresh):
             response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req,
                                      headers=header)
             print(response.json())
+            logging.info(str(response.json()))
             tokens.append(response.json()['access_token'])
     return tokens
 
@@ -79,7 +88,7 @@ ids_mail = load_obj("ids_mail")
 mail_refresh = load_obj("mail_refresh")
 
 
-def create_client_tokens(client_name,new_client):
+def create_client_tokens(client_name, new_client):
     cl_tkn = []
     header = {'Host': 'target.my.com', 'Content-Type': 'application/x-www-form-urlencoded'}
     for client in new_client:
@@ -91,6 +100,7 @@ def create_client_tokens(client_name,new_client):
         }
         response = requests.post('https://target.my.com/api/v2/oauth2/token.json', data=access_token_req, headers=header)
         print(response.json())
+        logging.info(str(response.json()))
         cl_tkn.append(response.json()['refresh_token'])
     return cl_tkn
 
@@ -100,8 +110,10 @@ print(clients[5])
 
 if clients[5] == ids_mail['n5zvIiexebHHazsF']:
     print("Client n5zvIiexebHHazsF is OK")
+    logging.info("Client n5zvIiexebHHazsF is OK")
 else:
     print("Client n5zvIiexebHHazsF is NOT OK")
+    logging.info("Client n5zvIiexebHHazsF is NOT OK")
     new_client = []
     for elem in clients[5]:
         if elem not in ids_mail['n5zvIiexebHHazsF']:
@@ -121,8 +133,10 @@ print(clients[4])
 
 if clients[4] == ids_mail['STBDrKKowc1aVQ1M']:
     print("Client STBDrKKowc1aVQ1M is OK")
+    logging.info("Client STBDrKKowc1aVQ1M is OK")
 else:
     print("Client STBDrKKowc1aVQ1M is NOT OK")
+    logging.info("Client STBDrKKowc1aVQ1M is NOT OK")
     new_client = []
     for elem in clients[4]:
         if elem not in ids_mail['STBDrKKowc1aVQ1M']:
@@ -142,8 +156,10 @@ print(clients[3])
 
 if clients[3] == ids_mail['iVTXNguDBEhyR2G0']:
     print("Client iVTXNguDBEhyR2G0 is OK")
+    logging.info("Client iVTXNguDBEhyR2G0 is OK")
 else:
     print("Client iVTXNguDBEhyR2G0 is NOT OK")
+    logging.info("Client iVTXNguDBEhyR2G0 is NOT OK")
     new_client = []
     for elem in clients[3]:
         if elem not in ids_mail['iVTXNguDBEhyR2G0']:
@@ -163,8 +179,10 @@ print(clients[2])
 
 if clients[2] == ids_mail['cCV7EfBVutwh1yzn']:
     print("Client cCV7EfBVutwh1yzn is OK")
+    logging.info("Client cCV7EfBVutwh1yzn is OK")
 else:
     print("Client cCV7EfBVutwh1yzn is NOT OK")
+    logging.info("Client cCV7EfBVutwh1yzn is NOT OK")
     new_client = []
     for elem in clients[2]:
         if elem not in ids_mail['cCV7EfBVutwh1yzn']:
@@ -184,8 +202,10 @@ print(clients[1])
 
 if clients[1] == ids_mail['Gcwd3JCrhpkj8DQn']:
     print("Client Gcwd3JCrhpkj8DQn is OK")
+    logging.info("Client Gcwd3JCrhpkj8DQn is OK")
 else:
     print("Client Gcwd3JCrhpkj8DQn is NOT OK")
+    logging.info("Client Gcwd3JCrhpkj8DQn is NOT OK")
     new_client = []
     for elem in clients[1]:
         if elem not in ids_mail['Gcwd3JCrhpkj8DQn']:
@@ -205,8 +225,10 @@ print(clients[0])
 
 if clients[0] == ids_mail['dBp0GGsdn2khbLCk']:
     print("Client dBp0GGsdn2khbLCk is OK")
+    logging.info("Client dBp0GGsdn2khbLCk is OK")
 else:
     print("Client dBp0GGsdn2khbLCk is NOT OK")
+    logging.info("Client dBp0GGsdn2khbLCk is NOT OK")
     new_client = []
     for elem in clients[0]:
         if elem not in ids_mail['dBp0GGsdn2khbLCk']:
@@ -232,24 +254,20 @@ proxies = {
 
 
 for token in tokens:
-    header = {'Host':'target.my.com','Content-Type':'application/json','Accept-Encoding':'gzip,deflate,compress',
-              'Authorization':'Bearer '+str(token)}
+    header = {'Host': 'target.my.com', 'Content-Type': 'application/json', 'Accept-Encoding': 'gzip,deflate,compress',
+              'Authorization': 'Bearer '+str(token)}
     response = requests.get('https://target.my.com/api/v1/campaigns.json', headers=header)
     campaigns = response.json()
     campaigns = sorted(campaigns, key=lambda x: x['status'])
     for i in range(len(campaigns)):
         print(len(campaigns))
-    #    if str(response.json()[i]['status']) == 'active':
-    #        campaigns.append(str(response.json()[i]['id']))
-    #        print(i)
-    #for campaign in campaigns:
-    #print("sleeping")
+        logging.info(len(campaigns))
         if str(campaigns[i]['status']) == 'active':
             date2_str = datetime.today().strftime("%d.%m.%Y")
             date2 = datetime.strptime(date2_str, '%d.%m.%Y')
             date1_str = ''
             date_list = str(campaigns[i]['created']).split('-')
-            date_list[2]=date_list[2][0:2]
+            date_list[2] = date_list[2][0:2]
             date_list[2] = date_list[2] + "."
             date_list[1] = date_list[1] + "."
             date_list.reverse()
@@ -258,26 +276,54 @@ for token in tokens:
             date1 = datetime.strptime(str(date1_str), '%d.%m.%Y')
             if (date2-date1).days <= 15:
                 print("sleeping")
+                logging.info("sleeping")
                 time.sleep(30)
-                response1 = requests.get('https://target.my.com/api/v1/campaigns/'+str(campaigns[i]['id'])+'.json', headers=header)
+                response1 = requests.get('https://target.my.com/api/v1/campaigns/'+str(campaigns[i]['id'])+'.json',
+                                         headers=header)
                 print(response1.json())
                 campaign = response1.json()
                 if str(campaign['date_end']) == '' or str(campaign['budget_limit']) == '' or str(campaign['budget_limit']) == 0:
-                    data = {'name':str('CHECK_')+str(campaign['name'].encode('utf-8')),'status':'blocked'}
+                    data = {'name': str('CHECK_')+str(campaign['name'].encode('utf-8')), 'status': 'blocked'}
                     edit_coms = requests.post('https://target.my.com/api/v1/campaigns/' + str(campaigns[i]['id'])
                                               + '.json', data=json.dumps(data), headers=header)
                     print(edit_coms.json())
-                    telegram_chat = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=-1001478926327&text="+str('CHECK_')+str(campaign['name'].encode('utf-8')), proxies=proxies)
+                    telegram_chat = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=-1001478926327&text=" + str('CHECK_') + str(campaign['name'].encode('utf-8')), proxies=proxies)
                     telegram_me = requests.post("https://api.telegram.org/bot759523145:AAEKxCONmNdMfsWBWAusKTvOsw_DB2Ok86M/sendMessage?chat_id=195831781&text=" + str('CHECK_') + str(campaign['name'].encode('utf-8')), proxies=proxies)
                 else:
                     print('campaign is OK')
+                    logging.info('campaign is OK')
 
             else:
                 print("more than 14")
+                logging.info("more than 14")
 
         else:
             print(campaigns)
+            logging.info(str(campaigns))
             print("Not active")
+            logging.info("Not active")
             print('NEXT')
+            logging.info('NEXT')
             break
 
+
+print('started in' + str(today_time))
+logging.info('started in' + str(today_time))
+print('ended in (on next line)')
+print(datetime.today())
+logging.info('ended in ' + str(datetime.today()))
+
+# 12:48
+# 14:51
+
+'''
+started in 15:00
+ended in (on next line)
+2019-01-10 16:55:32.323252
+'''
+
+'''
+started in 12:50
+ended in (on next line)
+2019-01-11 14:29:46.280032
+'''
